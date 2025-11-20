@@ -8,6 +8,6 @@ public interface RoleService {
 
     RoleDTO createRole(RoleDTO roleDTO);
     RoleDTO updateRole(RoleDTO roleDTO);
-    List<> getAll();
+    List<RoleDTO> getAll();
     RoleDTO deleteRole(RoleDTO roleDTO);
 }
