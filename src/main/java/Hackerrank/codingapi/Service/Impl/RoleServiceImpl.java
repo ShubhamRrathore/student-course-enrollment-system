@@ -38,7 +38,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleDTO> getAll() {
+    public List<RoleDTO> getAllRole() {
         return null;
     }
 
