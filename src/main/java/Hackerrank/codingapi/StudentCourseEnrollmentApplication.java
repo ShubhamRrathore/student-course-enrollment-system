@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableAsync
-public class TradingApiApplication {
+public class StudentCourseEnrollmentApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TradingApiApplication.class, args);
+		SpringApplication.run(StudentCourseEnrollmentApplication.class, args);
 	}
 
 }
