@@ -4,9 +4,11 @@
 
 package Hackerrank.codingapi.controllers;
 
+import Hackerrank.codingapi.payloads.studentdtos.PatchDTO;
 import Hackerrank.codingapi.payloads.studentdtos.StudentDTO;
 import Hackerrank.codingapi.Service.services.StudentService;
 import Hackerrank.codingapi.entities.Student;
+import Hackerrank.codingapi.payloads.studentdtos.UpdateDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +38,16 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable Long id , @RequestBody Student student){
-        return ResponseEntity.ok(studentService.updateStudent(id, student));
+    public ResponseEntity<UpdateDTO> updateStudent(@PathVariable Long id , @RequestBody UpdateDTO updateDTO ){
+        return ResponseEntity.ok(studentService.updateStudent(id, updateDTO));
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PatchDTO>  partialUpdate(@PathVariable Long id , @RequestBody PatchDTO patchDTO){
+        return ResponseEntity.ok(studentService.partialUpdate(id , patchDTO));
+    }
+
+
 
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudent() {

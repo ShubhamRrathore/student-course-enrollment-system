@@ -28,10 +28,6 @@ public class StockEntityContoller {
     public ResponseEntity<List<StockTradeDTO>> getStock(){
         return new ResponseEntity<List<StockTradeDTO>>(this.stockService.getStock(), HttpStatus.OK);
     }
-//    @GetMapping("/")
-//    public String greet(){
-//        return "Hello shubham";
-//    }
 
 
     @GetMapping("/")

@@ -3,12 +3,14 @@ package Hackerrank.codingapi.Service.Impl;
 import Hackerrank.codingapi.Utils.ValidationUtils;
 import Hackerrank.codingapi.exception.ResourceNotFoundException;
 import Hackerrank.codingapi.mapper.StudentMapper;
+import Hackerrank.codingapi.payloads.studentdtos.PatchDTO;
 import Hackerrank.codingapi.payloads.studentdtos.StudentDTO;
 
 import Hackerrank.codingapi.payloads.studentdtos.StudentEnrollmentDTO;
 import Hackerrank.codingapi.Service.services.StudentService;
 import Hackerrank.codingapi.controllers.EnrollController;
 import Hackerrank.codingapi.entities.Student;
+import Hackerrank.codingapi.payloads.studentdtos.UpdateDTO;
 import Hackerrank.codingapi.repositories.StudentRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -65,11 +67,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Transactional
     @Override
-    public StudentDTO updateStudent(Long id, Student student) {
+    public UpdateDTO updateStudent(Long id, UpdateDTO updateDTO) {
         ValidationUtils.validateNotNull(id, "id");
         Student existingStudent  = studentRepo.findById(id).orElseThrow(() ->new ResourceNotFoundException("Student"  , "Id" , id));
-        existingStudent.setEmail(student.getEmail());
-        existingStudent.setName(student.getName());
+        existingStudent.setEmail(updateDTO.getEmail());
+        existingStudent.setName(updateDTO.getName());
         // dirty checking will work and auto save it
 
 //        Student student1 = studentRepo.save(existingStudent);
@@ -78,8 +80,25 @@ public class StudentServiceImpl implements StudentService {
 //        System.out.println("please print student1 :::" + student1);
 //        System.out.println("please print existingStudent1 :::" + existingStudent);
 
-        return studentMapper.studentoDTO(existingStudent);
+        return studentMapper.UPDATE_DTO(existingStudent);
     }
+
+    @Override
+    @Transactional
+    public PatchDTO partialUpdate( Long id , PatchDTO patchDTO) {
+        ValidationUtils.validateNotNull(id, "id");
+        Student existingStudent  = studentRepo.findById(id).orElseThrow(() ->new ResourceNotFoundException("Student"  , "Id" , id));
+        if (patchDTO.getName() != null) {
+            existingStudent.setName(patchDTO.getName());
+        }
+        if (patchDTO.getEmail() != null) {
+            existingStudent.setEmail(patchDTO.getEmail());
+        }
+        return  studentMapper.PATCH_DTO(existingStudent);
+    }
+
+
+
 
     @Override
     public void deleteStudent(Long id) {

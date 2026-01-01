@@ -1,7 +1,9 @@
 package Hackerrank.codingapi.Service.services;
 
+import Hackerrank.codingapi.payloads.studentdtos.PatchDTO;
 import Hackerrank.codingapi.payloads.studentdtos.StudentDTO;
 import Hackerrank.codingapi.entities.Student;
+import Hackerrank.codingapi.payloads.studentdtos.UpdateDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +18,8 @@ public interface StudentService {
     Student createStudent(Student student);
     List<StudentDTO> getAllStudents();
     StudentDTO getStudentById(Long id);
-    StudentDTO updateStudent(Long id, Student student);
+    UpdateDTO updateStudent(Long id, UpdateDTO updateDTO);
+    PatchDTO partialUpdate(Long id, PatchDTO patchDTO);
     void deleteStudent(Long id);
 
     // -----------------------

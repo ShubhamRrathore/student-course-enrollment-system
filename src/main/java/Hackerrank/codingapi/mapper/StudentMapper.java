@@ -1,9 +1,7 @@
 package Hackerrank.codingapi.mapper;
 
 import Hackerrank.codingapi.payloads.enrollmentdtos.GetAllEnrollDTO;
-import Hackerrank.codingapi.payloads.studentdtos.StudentDTO;
-import Hackerrank.codingapi.payloads.studentdtos.StudentEnrollDto;
-import Hackerrank.codingapi.payloads.studentdtos.StudentEnrollmentDTO;
+import Hackerrank.codingapi.payloads.studentdtos.*;
 import Hackerrank.codingapi.entities.Enrollment;
 import Hackerrank.codingapi.entities.Student;
 import org.mapstruct.Mapper;
@@ -15,6 +13,11 @@ import java.util.List;
 public interface StudentMapper {
  @Mapping(source = "enrollments", target = "enrollData")
  StudentDTO studentoDTO(Student student);
+
+
+ UpdateDTO UPDATE_DTO(Student student);
+
+PatchDTO PATCH_DTO(Student student) ;
 //
 //@Mapping(source = "course.id"  , target = "courseId")
 //@Mapping(source = "course.title" , target = "courseTitle")
