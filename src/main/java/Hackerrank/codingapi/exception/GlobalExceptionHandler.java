@@ -31,6 +31,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(AlreadyEnrolledException.class)
+    public ResponseEntity<ApiError> handleAlreadyEnrolled(
+            AlreadyEnrolledException ex , HttpServletRequest request) {
+
+        ApiError apiError = new ApiError();
+        apiError.setTimestamp(LocalDateTime.now());
+        apiError.setStatus(HttpStatus.CONFLICT.value());
+        apiError.setMessage(ex.getMessage());
+        apiError.setError("CONFLICT");
+        apiError.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+    }
+
     // 🔹 Invalid Arguments
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiError> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest request) {

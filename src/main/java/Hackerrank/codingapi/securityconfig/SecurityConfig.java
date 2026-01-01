@@ -30,6 +30,10 @@ public class SecurityConfig {
     // example public URLs
     private static final String[] PUBLIC_URLS = {
             "api/v1/auth/**",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/swagger-ui.html"
+
 //            "/public/**"
     };
 
@@ -42,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").authenticated()
                         .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
 //                        .requestMatchers("/user/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-//                                .requestMatchers(HttpMethod.GET).authenticated()  // allow all GET requests
+                                .requestMatchers(HttpMethod.GET).permitAll()  // allow all GET requests
                                 .anyRequest().authenticated()        // everything else requires auth
                 )
                 // exception handling

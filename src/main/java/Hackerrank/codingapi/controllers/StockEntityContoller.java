@@ -33,6 +33,7 @@ public class StockEntityContoller {
 //        return "Hello shubham";
 //    }
 
+
     @GetMapping("/")
     public ResponseEntity<List<StockTradeDTO>> filterStock(@RequestParam String type , @RequestParam Integer userID){
 
@@ -43,6 +44,7 @@ public class StockEntityContoller {
             return new ResponseEntity<List<StockTradeDTO>>(this.stockService.getStock() ,HttpStatus.OK);
         }
     }
+
 
     @GetMapping("/{id}")
     public  ResponseEntity<StockTradeDTO> getById(@PathVariable  Integer id){

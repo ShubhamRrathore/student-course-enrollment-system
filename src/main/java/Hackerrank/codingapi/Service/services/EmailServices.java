@@ -1,7 +1,9 @@
 package Hackerrank.codingapi.Service.services;
 
 
-public interface EmailService {
+import Hackerrank.codingapi.entities.EmailRequest;
+
+public interface EmailServices {
 
     void sendEmail(EmailRequest emailRequest);
 

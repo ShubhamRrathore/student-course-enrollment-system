@@ -1,8 +1,13 @@
+
+
+
+
 package Hackerrank.codingapi.controllers;
 
 import Hackerrank.codingapi.payloads.studentdtos.StudentDTO;
 import Hackerrank.codingapi.Service.services.StudentService;
 import Hackerrank.codingapi.entities.Student;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,27 +21,41 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/public/api/student")
+@RequestMapping("/api/student")
+@SecurityRequirement(name = "bearerAuth")
+
 public class StudentController {
 
     private final StudentService studentService;
 
+
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        return new ResponseEntity<Student>(this.studentService.createStudent(student), HttpStatus.CREATED);
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(studentService.createStudent(student));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StudentDTO> updateStudent(@PathVariable Long id , @RequestBody Student student){
+        return ResponseEntity.ok(studentService.updateStudent(id, student));
     }
 
     @GetMapping
-    public  ResponseEntity<List<StudentDTO>> getAllStudent(){
-        return  new ResponseEntity<>(this.studentService.getAllStudents(),HttpStatus.OK);
+    public ResponseEntity<List<StudentDTO>> getAllStudent() {
+        return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<StudentDTO>>  getStudentsEnrolledAfter( @RequestParam ("localDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate){
-
-        System.out.println("bhai kcuh to print ker de kya issue hai");
-        return new  ResponseEntity<>(this.studentService.getStudentsEnrolledAfter(localDate) ,HttpStatus.OK);
+    @GetMapping("/enrolled-after")
+    public ResponseEntity<List<StudentDTO>> getStudentsEnrolledAfter(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate localDate) {
+        return ResponseEntity.ok(studentService.getStudentsEnrolledAfter(localDate));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<StudentDTO> findStudentById(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.getStudentById(id));
+    }
+
 
 
 

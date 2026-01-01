@@ -4,6 +4,7 @@ import Hackerrank.codingapi.payloads.coursedtos.CourseCountRespons;
 import Hackerrank.codingapi.payloads.coursedtos.CourseDTO;
 import Hackerrank.codingapi.Service.Impl.CourseServiceImpl;
 import Hackerrank.codingapi.entities.Course;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,35 +14,51 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/public/api/course")
+@RequestMapping("/api/course")
+@SecurityRequirement(name = "bearerAuth")
+
 public class CourseController {
 
    private final CourseServiceImpl courseService;
 
-   @PostMapping
-   public ResponseEntity<Course> createCourse(@RequestBody Course course){
-       return new ResponseEntity<>(this.courseService.createCourse(course), HttpStatus.CREATED);
-   }
 
-    @PostMapping("/bulk")
-    public ResponseEntity<List<CourseDTO>> createCourses(@RequestBody List<CourseDTO> courses) {
-        return new ResponseEntity<List<CourseDTO>>(this.courseService.createCourses(courses),HttpStatus.CREATED);
+    // ---------------- CREATE SINGLE COURSE ----------------
+    @PostMapping
+    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(courseService.createCourse(course));
     }
 
-   @GetMapping
-   public  ResponseEntity<List<CourseDTO>> getAllCourse(){
-       return new ResponseEntity<>(this.courseService.getAllCourses(),HttpStatus.OK);
-   }
+    // ---------------- CREATE COURSES IN BULK ----------------
+    @PostMapping("/bulk")
+    public ResponseEntity<List<CourseDTO>> createCourses(@RequestBody List<CourseDTO> courses) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(courseService.createCourses(courses));
+    }
 
-   @GetMapping("/")
-   public  ResponseEntity<List<CourseCountRespons>> getCoursesWithMinStudents(@RequestParam ("minStudent") Long minStudent)
-   {
-       return new  ResponseEntity<>(this.courseService.getCoursesWithMinStudents(minStudent) , HttpStatus.OK);
-   }
+    // ---------------- GET ALL COURSES ----------------
+    @GetMapping
+    public ResponseEntity<List<CourseDTO>> getAllCourse() {
+        return ResponseEntity.ok(courseService.getAllCourses());
+    }
 
-   @GetMapping("/noStudents")
-    public ResponseEntity<List<CourseCountRespons>> getCoursesWithNoStudents(){
-       return new ResponseEntity<>(this.courseService.getCoursesWithNoStudents(),HttpStatus.OK);
-   }
+    // ---------------- GET COURSES WITH MIN STUDENTS ----------------
+    @GetMapping("/min-students")
+    public ResponseEntity<List<CourseCountRespons>> getCoursesWithMinStudents(
+            @RequestParam("minStudents") Long minStudents) {
+
+        return ResponseEntity.ok(
+                courseService.getCoursesWithMinStudents(minStudents)
+        );
+    }
+
+    // ---------------- GET COURSES WITH NO STUDENTS ----------------
+    @GetMapping("/no-students")
+    public ResponseEntity<List<CourseCountRespons>> getCoursesWithNoStudents() {
+        return ResponseEntity.ok(courseService.getCoursesWithNoStudents());
+    }
+
 
 }

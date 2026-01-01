@@ -14,5 +14,5 @@ import java.util.List;
 public class StudentDTO {
     private  Long id ;
     private  String name;
-    private List<GetAllEnrollDTO>  enrollData;
+    private List<StudentEnrollDto>  enrollData;
 }

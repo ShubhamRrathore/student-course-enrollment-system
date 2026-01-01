@@ -1,5 +1,7 @@
 package Hackerrank.codingapi.Service.Impl;
 
+import Hackerrank.codingapi.Utils.ValidationUtils;
+import Hackerrank.codingapi.exception.ResourceNotFoundException;
 import Hackerrank.codingapi.mapper.StudentMapper;
 import Hackerrank.codingapi.payloads.studentdtos.StudentDTO;
 
@@ -8,6 +10,7 @@ import Hackerrank.codingapi.Service.services.StudentService;
 import Hackerrank.codingapi.controllers.EnrollController;
 import Hackerrank.codingapi.entities.Student;
 import Hackerrank.codingapi.repositories.StudentRepo;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +41,8 @@ public class StudentServiceImpl implements StudentService {
 
         try{
             List<Student> students = this.studentRepo.findAllWithEnrollments();
+//            List<Student> students = this.studentRepo.findAll();
+
 //            for(Student  s: students){
 //                System.out.println("Student: " + s.getName());
 //                for(Enrollment enrollment: s.getEnrollments()){
@@ -52,18 +57,32 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student getStudentById(Long id) {
-        return null;
+    public StudentDTO getStudentById(Long id) {
+        ValidationUtils.validateNotNull(id, "id");
+       Student student = studentRepo.findById(id).orElseThrow(() ->new ResourceNotFoundException("Student"  , "Id" , id));
+       return studentMapper.studentoDTO(student);
     }
 
+    @Transactional
     @Override
-    public Student updateStudent(Long id, Student student) {
-        return null;
+    public StudentDTO updateStudent(Long id, Student student) {
+        ValidationUtils.validateNotNull(id, "id");
+        Student existingStudent  = studentRepo.findById(id).orElseThrow(() ->new ResourceNotFoundException("Student"  , "Id" , id));
+        existingStudent.setEmail(student.getEmail());
+        existingStudent.setName(student.getName());
+        // dirty checking will work and auto save it
+
+//        Student student1 = studentRepo.save(existingStudent);
+//        student1.getEnrollments().size();
+//
+//        System.out.println("please print student1 :::" + student1);
+//        System.out.println("please print existingStudent1 :::" + existingStudent);
+
+        return studentMapper.studentoDTO(existingStudent);
     }
 
     @Override
     public void deleteStudent(Long id) {
-
     }
 
     @Override
