@@ -36,3 +36,7 @@ build/
 
 hs_err_pid*.log
 
+
+# Logs
+logs/
+*.log

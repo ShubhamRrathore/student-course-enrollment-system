@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 @Repository
 public interface StudentRepo extends JpaRepository<Student, Long> {
-    @Query("SELECT s FROM Student s LEFT JOIN FETCH s.enrollments")
+    @Query("SELECT DISTINCT s FROM Student s LEFT JOIN FETCH s.enrollments e LEFT JOIN FETCH e.course")
     List<Student> findAllWithEnrollments();
 
 //    @Query("SELECT e.student FROM Enrollment e WHERE e.enrollmentDate > : date")
